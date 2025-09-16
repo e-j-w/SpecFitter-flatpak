@@ -11,6 +11,9 @@ finish-args:
   - --socket=wayland
   # GPU acceleration
   - --device=dri
+  # allow opening files directly from the file manager or command line
+  # (there might be a better way to do this with portals that I'm unaware of)
+  - --filesystem=host:ro
 modules:
   - name: specfitter
     buildsystem: simple
@@ -21,11 +24,11 @@ modules:
       - mv specfitter io.github.e_j_w.SpecFitter
       - sed -i 's#/usr/bin/specfitter#io.github.e_j_w.SpecFitter#g' data/io.github.e_j_w.SpecFitter.desktop
       # install
-      - install -Dm755 io.github.e_j_w.SpecFitter -t /app/bin
-      - install -Dm644 data/io.github.e_j_w.SpecFitter.metainfo.xml -t /app/share/metainfo
-      - install -Dm644 data/io.github.e_j_w.SpecFitter.svg -t /app/share/icons/hicolor/scalable/apps
-      - install -Dm644 data/io.github.e_j_w.SpecFitter.desktop -t /app/share/applications
-      - install -Dm644 data/specfitter-mime.xml -t /app/share/mime
+      - install -Dm755 io.github.e_j_w.SpecFitter -t ${FLATPAK_DEST}/bin
+      - install -Dm644 data/io.github.e_j_w.SpecFitter.metainfo.xml -t ${FLATPAK_DEST}/share/metainfo
+      - install -Dm644 data/io.github.e_j_w.SpecFitter.svg -t ${FLATPAK_DEST}/share/icons/hicolor/scalable/apps
+      - install -Dm644 data/io.github.e_j_w.SpecFitter.desktop -t ${FLATPAK_DEST}/share/applications
+      - install -Dm644 data/io.github.e_j_w.SpecFitter-mime.xml -t ${FLATPAK_DEST}/share/mime/packages
     sources:
       - type: git
         url: https://github.com/e-j-w/SpecFitter.git
