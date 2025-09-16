@@ -1,5 +1,5 @@
 
-# Chart of Nuclides metadata
+# SpecFitter metadata
 
 This repo contains [Flatpak](https://flatpak.org/) metadata for [SpecFitter](https://github.com/e-j-w/SpecFitter).
 
