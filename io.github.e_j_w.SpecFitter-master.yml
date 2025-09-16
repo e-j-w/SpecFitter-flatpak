@@ -1,0 +1,33 @@
+id: io.github.e_j_w.SpecFitter
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: io.github.e_j_w.SpecFitter
+finish-args:
+  # X11 + XShm access
+  - --share=ipc
+  - --socket=fallback-x11
+  # Wayland access
+  - --socket=wayland
+  # GPU acceleration
+  - --device=dri
+modules:
+  - name: specfitter
+    buildsystem: simple
+    build-commands:
+      - make -j ${FLATPAK_BUILDER_N_JOBS}
+      # rename executable for compatibility with KDE task manager
+      # which assumes the same name for the executable and .desktop file
+      - mv specfitter io.github.e_j_w.SpecFitter
+      - sed -i 's#/usr/bin/specfitter#io.github.e_j_w.SpecFitter#g' data/io.github.e_j_w.SpecFitter.desktop
+      # install
+      - install -Dm755 io.github.e_j_w.SpecFitter -t /app/bin
+      - install -Dm644 data/io.github.e_j_w.SpecFitter.metainfo.xml -t /app/share/metainfo
+      - install -Dm644 data/io.github.e_j_w.SpecFitter.svg -t /app/share/icons/hicolor/scalable/apps
+      - install -Dm644 data/io.github.e_j_w.SpecFitter.desktop -t /app/share/applications
+      - install -Dm644 data/specfitter-mime.xml -t /app/share/mime
+    sources:
+      - type: git
+        url: https://github.com/e-j-w/SpecFitter.git
+    cleanup:
+      - 'specfitter-resources.c'
